@@ -1,0 +1,42 @@
+{
+  "Main": {
+    "heroheader": {
+      "type": "Text",
+      "config": {
+        "label": "HeroHeader"
+      }
+    },
+    "herosubheader": {
+      "type": "Text",
+      "config": {
+        "label": "HeroSubheader"
+      }
+    },
+    "heroactionurl": {
+      "type": "Text",
+      "config": {
+        "label": "heroActionUrl"
+      }
+    },
+    "heroactiontext": {
+      "type": "Text",
+      "config": {
+        "label": "heroActionText"
+      }
+    },
+    "heroimageurl": {
+      "type": "Text",
+      "config": {
+        "label": "heroImageUrl"
+      }
+    },
+    "homeimagetest": {
+      "type": "Image",
+      "config": {
+        "constraint": {},
+        "thumbnails": [],
+        "label": "homeImageTest"
+      }
+    }
+  }
+}

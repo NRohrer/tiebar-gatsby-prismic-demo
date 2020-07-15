@@ -1,0 +1,36 @@
+.homePageHeaderGrid {
+	max-height: 578px;
+}
+.heroImage {
+	width: 100%;
+}
+.homePageHeaderTextGrid {
+	display: block;
+	max-width: 570px;
+	text-align: right;
+	justify-content: flex-end;
+	margin: 10px;
+}
+.homePageHeaderLevelOne {
+	color: white;
+	max-height: 116px;
+}
+.homePageSubHeader {
+	text-shadow: -1px 1px 0 #5b6770;
+	max-height: 70px;
+	margin-bottom: 20px;
+	color: white;
+}
+.homePageHeaderButton {
+	background-color: white;
+	color: black;
+	margin: 10px;
+}
+.homePageHeaderOuterGrid {
+	max-width: 1180px;
+	position: absolute;
+	top: 48%;
+	left: 50%;
+	padding: 0;
+	transform: translateX(-50%);
+}
