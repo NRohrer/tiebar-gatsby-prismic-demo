@@ -2,6 +2,7 @@ import React from "react"
 import { Link } from "gatsby"
 import { withStyles, Grid, Typography, Button } from '@material-ui/core'
 import indexStyles from '../styles/index.module.css'
+import { graphql } from 'gatsby'
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
