@@ -52,5 +52,60 @@ exports.createPages = async ({ actions: {createPage }, graphql }) => {
         slug: product.slug,
       },
     })
-  })
+	})
+
+	var axios = require('axios');
+	const PLPs = ["shirts", "pants", "ties"]
+
+	// configuration for token api call
+	var tokenConfig = {
+		method: 'get',
+		url: 'https://web-dev.thetiebar.com/api/token',
+		headers: {
+			'x-client-id': '7c1f4a77f8f7443bb0d0af8fca9f27f8',
+			'Cookie': 'moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040'
+		}
+	};
+
+	// token api call
+	axios(tokenConfig)
+	.then(function (response) {
+		console.log(JSON.stringify(response.data));
+
+		PLPs.forEach(plp => {
+
+			// configuration for PLP api calls
+			var plpConfig = {
+				method: 'get',
+				url: `https://web-dev.thetiebar.com/api/products/${plp}`,
+				headers: {
+					'x-client-id': '7c1f4a77f8f7443bb0d0af8fca9f27f8',
+					'x-Access-Token': response.data,
+					'Cookie': 'moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040'
+				}
+			};
+
+			// PLP api call
+			axios(plpConfig)
+			.then(function (response) {
+				console.log(JSON.stringify(response.data));
+
+				// create PLP for each item in PLP list
+				createPage({
+					path: `/${plp}/`,
+					component: require.resolve("./src/templates/product-listing.js"),
+					context: {
+						item: "test"
+					},
+				})
+
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		})
+	})
+	.catch(function (error) {
+		console.log(error);
+	});
 }
