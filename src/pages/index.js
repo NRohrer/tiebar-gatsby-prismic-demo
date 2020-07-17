@@ -1,6 +1,5 @@
 import React from "react"
-import { Link } from "gatsby"
-import { withStyles, Grid, Typography, Button } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import indexStyles from '../styles/index.module.css'
 import { graphql } from 'gatsby'
 
@@ -29,6 +28,7 @@ const IndexPage = ({data}) => (
             <img
               src={data.prismicHomepage.data.heroimageurl}
               className={indexStyles.heroImage}
+              alt={data.prismicHomepage.data.heroactiontext}
             />
             <Grid container justify="flex-end" className={indexStyles.homePageHeaderOuterGrid} >
               <div className={indexStyles.homePageHeaderTextGrid}>

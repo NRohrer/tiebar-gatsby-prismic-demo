@@ -91,10 +91,10 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
   }
 
   // PLP api call
-  const products1 = await axios(plpConfig)
+  const plpResults = await axios(plpConfig)
     .then(function (response) {
       //console.log(JSON.stringify(response.data));
-      return response.data.result.products
+      return response.data
     })
     .catch(function (error) {
       console.log(error)
@@ -105,7 +105,7 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
     path: `/shirts/`,
     component: require.resolve("./src/templates/product-listing.js"),
     context: {
-      items: products1,
+      data: plpResults,
     },
   })
 }
