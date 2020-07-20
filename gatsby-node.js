@@ -109,20 +109,24 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
   //   },
   // })
 
-  axios.all(plps.map(plp => getPLPEndPoint(plp)))
+  const loadProjects = new Promise((resolve, reject) => {
+    axios.all(plps.map(plp => getPLPEndPoint(plp)))
     .then(axios.spread(function (...res) {
       // all requests are now complete
-      for (var i = 0; i < res.length; i++) {
-        //console.log(res[i]);
+      Promise.all(res.map(async(response, i) => {
         createPage({
           path: `/${plps[i]}/`,
           component: require.resolve("./src/templates/product-listing.js"),
           context: {
-            data: res[i].data,
+            data: response.data,
           },
         })
-      }
+      })).then(resolve)
+
     }));
+  })
+
+  await Promise.all([loadProjects])
 
   function getPLPEndPoint(plp) {
     let testConfig = {
