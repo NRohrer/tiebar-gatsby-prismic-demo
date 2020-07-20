@@ -55,7 +55,7 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
   })
 
   var axios = require("axios")
-  const PLPs = ["shirts", "pants", "ties"]
+  const plps = ["shirts", "pants", "ties", "clothing", "whats-new", "bow-ties"]
 
   // configuration for token api call
   var tokenConfig = {
@@ -79,33 +79,103 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
     })
 
   // configuration for PLP api calls
-  let plpConfig = {
-    method: "get",
-    url: `https://web-dev.thetiebar.com/api/products/shirts`,
-    headers: {
-      "x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
-      "x-Access-Token": token,
-      Cookie:
-        "moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040",
-    },
+  // let plpConfig = {
+  //   method: "get",
+  //   url: `https://web-dev.thetiebar.com/api/products/shirts`,
+  //   headers: {
+  //     "x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
+  //     "x-Access-Token": token,
+  //     Cookie:
+  //       "moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040",
+  //   },
+  // }
+
+  // // PLP api call
+  // const plpResults = await axios(plpConfig)
+  //   .then(function (response) {
+  //     //console.log(JSON.stringify(response.data));
+  //     return response.data
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error)
+  //   })
+
+  // // create PLP for each item in PLP list
+  // createPage({
+  //   path: `/shirts/`,
+  //   component: require.resolve("./src/templates/product-listing.js"),
+  //   context: {
+  //     data: plpResults,
+  //   },
+  // })
+
+  axios.all(plps.map(plp => getPLPEndPoint(plp)))
+    .then(axios.spread(function (...res) {
+      // all requests are now complete
+      for (var i = 0; i < res.length; i++) {
+        //console.log(res[i]);
+        createPage({
+          path: `/${plps[i]}/`,
+          component: require.resolve("./src/templates/product-listing.js"),
+          context: {
+            data: res[i].data,
+          },
+        })
+      }
+    }));
+
+  function getPLPEndPoint(plp) {
+    let testConfig = {
+      method: "get",
+      url: `https://web-dev.thetiebar.com/api/products/${plp}`,
+      headers: {
+        "x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
+        "x-Access-Token": token,
+        Cookie:
+          "moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040",
+      },
+    }
+
+    return axios(testConfig)
   }
 
-  // PLP api call
-  const plpResults = await axios(plpConfig)
-    .then(function (response) {
-      //console.log(JSON.stringify(response.data));
-      return response.data
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  // plps.forEach(plp => {
+  //   let plpConfig = {
+  //     method: "get",
+  //     url: `https://web-dev.thetiebar.com/api/products/${plp}`,
+  //     headers: {
+  //       "x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
+  //       "x-Access-Token": token,
+  //       Cookie:
+  //         "moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040",
+  //     },
+  //   }
 
-  // create PLP for each item in PLP list
-  createPage({
-    path: `/shirts/`,
-    component: require.resolve("./src/templates/product-listing.js"),
-    context: {
-      data: plpResults,
-    },
-  })
+  //   let promises = []
+
+  //   // PLP api call
+  //   let plpResults = await axios(plpConfig)
+  //     .then(function (response) {
+  //       //console.log(JSON.stringify(response.data));
+  //       return response.data
+  //     })
+  //     .then(function (response) {
+  //       //console.log(JSON.stringify(response.data));
+  //       return response.data
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error)
+  //     })
+
+  //   // create PLP for each item in PLP list
+  //   createPage({
+  //     path: `/shirts/`,
+  //     component: require.resolve("./src/templates/product-listing.js"),
+  //     context: {
+  //       data: plpResults,
+  //     },
+  //   })
+  // })
+
+
 }
