@@ -16,7 +16,7 @@ class ProductDetail extends React.Component {
 		// configuration for token api call
 		var tokenConfig = {
 			method: "get",
-			url: "/api/token",
+			url: "https://web-dev.thetiebar.com/api/token",
 			headers: {
 				"x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
 				Cookie:
@@ -29,7 +29,7 @@ class ProductDetail extends React.Component {
 			.then(function (response) {
 				let productConfig = {
 					method: "get",
-					url: `/api${pathName}`,
+					url: `https://web-dev.thetiebar.com/api${pathName}`,
 					headers: {
 						"x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
 						"x-Access-Token": response.data,
