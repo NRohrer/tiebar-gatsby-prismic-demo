@@ -78,38 +78,8 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
       console.log(error)
     })
 
-  // configuration for PLP api calls
-  // let plpConfig = {
-  //   method: "get",
-  //   url: `https://web-dev.thetiebar.com/api/products/shirts`,
-  //   headers: {
-  //     "x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
-  //     "x-Access-Token": token,
-  //     Cookie:
-  //       "moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040",
-  //   },
-  // }
-
-  // // PLP api call
-  // const plpResults = await axios(plpConfig)
-  //   .then(function (response) {
-  //     //console.log(JSON.stringify(response.data));
-  //     return response.data
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error)
-  //   })
-
-  // // create PLP for each item in PLP list
-  // createPage({
-  //   path: `/shirts/`,
-  //   component: require.resolve("./src/templates/product-listing.js"),
-  //   context: {
-  //     data: plpResults,
-  //   },
-  // })
-
-  const loadProjects = new Promise((resolve, reject) => {
+  // PLP pages with Rest API data
+  const productLandPages = new Promise((resolve, reject) => {
     axios.all(plps.map(plp => getPLPEndPoint(plp)))
     .then(axios.spread(function (...res) {
       // all requests are now complete
@@ -126,7 +96,7 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
     }));
   })
 
-  await Promise.all([loadProjects])
+  await Promise.all([productLandPages])
 
   function getPLPEndPoint(plp) {
     let testConfig = {
@@ -142,44 +112,5 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
 
     return axios(testConfig)
   }
-
-  // plps.forEach(plp => {
-  //   let plpConfig = {
-  //     method: "get",
-  //     url: `https://web-dev.thetiebar.com/api/products/${plp}`,
-  //     headers: {
-  //       "x-client-id": "7c1f4a77f8f7443bb0d0af8fca9f27f8",
-  //       "x-Access-Token": token,
-  //       Cookie:
-  //         "moov_bucket=79; .ASPXANONYMOUS=kgDGsKVYEQQM6ymrXI8HRZdnKM4yxvf1Ot2QduvA_Vc6_ddKa64eYgXH50EbBxOLtuReFsCmIBfeezONm6Pp4WCZx9e7yB1qWa5d6IknLxUEP0xA9H3xWE_OMx0RimQNVXfOZA2; moov_=3b370d15-6234-4ebe-bfcd-05ab980e4040",
-  //     },
-  //   }
-
-  //   let promises = []
-
-  //   // PLP api call
-  //   let plpResults = await axios(plpConfig)
-  //     .then(function (response) {
-  //       //console.log(JSON.stringify(response.data));
-  //       return response.data
-  //     })
-  //     .then(function (response) {
-  //       //console.log(JSON.stringify(response.data));
-  //       return response.data
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error)
-  //     })
-
-  //   // create PLP for each item in PLP list
-  //   createPage({
-  //     path: `/shirts/`,
-  //     component: require.resolve("./src/templates/product-listing.js"),
-  //     context: {
-  //       data: plpResults,
-  //     },
-  //   })
-  // })
-
 
 }
