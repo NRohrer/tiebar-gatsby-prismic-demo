@@ -20,7 +20,7 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
   const products = require("./data/products.json")
   products.forEach(product => {
     createPage({
-      path: `/product/${product.slug}`,
+      path: `/product-json/${product.slug}`,
       component: require.resolve("./src/templates/product.js"),
       context: {
         title: product.title,
@@ -113,4 +113,21 @@ exports.createPages = async ({ actions: { createPage }, graphql }) => {
     return axios(testConfig)
   }
 
+  // createPage({
+  //   path: "/product/",
+  //   component: require.resolve("./src/templates/product-detail.js"),
+  // })
+
 }
+
+// exports.onCreatePage = async ({ page, actions }) => {
+//   const { createPage } = actions
+//   // Only update the `/product` page.
+//   if (page.path.match(/^\/product/)) {
+//     // page.matchPath is a special key that's used for matching pages
+//     // with corresponding routes only on the client.
+//     page.matchPath = "/product/*"
+//     // Update the page.
+//     createPage(page)
+//   }
+// }

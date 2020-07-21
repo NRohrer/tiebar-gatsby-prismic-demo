@@ -48,9 +48,17 @@ module.exports = {
           homepage: require("./src/schemas/homepage.json")
         }
       }
-    }
+    },
+    {
+      resolve: `gatsby-plugin-create-client-paths`,
+      options: { prefixes: [`/product/*`] },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
   ],
+  proxy: {
+    prefix: "/api",
+    url: "https://web-dev.thetiebar.com",
+  },
 }
